@@ -1,0 +1,9 @@
+- model: users.AdminUser
+  pk: 1
+  fields:
+    password: pbkdf2_sha256$260000$7kbx9Um0UpKzrVX184ttCM$MxZ4N9pWPTFNj6HEfv9gPJ3OLS+97W+Z1+zzUazmrgI=
+    is_superuser: true
+    is_staff: true
+    is_active: true
+    date_joined: 2022-02-22 06:33:15.33438+00
+    username: test

@@ -1,0 +1,54 @@
+version: "3.9"
+   
+services:
+  db:
+    container_name: db
+    image: postgres
+    command: postgres -N 500
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+    networks:
+      - dbnet
+    stdin_open: true
+    tty: true
+  admin:
+    container_name: admin
+    build: ./admin/
+    command: python manage.py runserver 0.0.0.0:8000
+    working_dir: /src/admin/
+    volumes:
+      - .:/src
+      - ./admin/static:/var/cache/admin/static
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    networks:
+      - dbnet
+    depends_on:
+      - db
+  web:
+    container_name: web
+    build: .
+    working_dir: /src/web/
+    ports:
+      - "80:80"
+    volumes:
+      - ./web:/src/web
+    networks:
+      - dbnet
+  mail.dev:
+    container_name: mail.dev
+    image: mailhog/mailhog
+    logging:
+      driver: 'none'  # disable saving logs
+    ports:
+      - 1025:1025 # smtp server
+      - 8025:8025 # web ui
+networks:
+  skynet:
+    name: db-network

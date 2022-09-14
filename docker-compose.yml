@@ -1,0 +1,19 @@
+version: "3.9"
+   
+services:
+  db:
+    extends:
+      file: docker-services.yml
+      service: db
+  web:
+    extends:
+      file: docker-services.yml
+      service: web
+  admin:
+    extends:
+      file: docker-services.yml
+      service: admin
+    command: python manage.py runserver 0.0.0.0:8000
+networks:
+  dbnet:
+    name: db-network
